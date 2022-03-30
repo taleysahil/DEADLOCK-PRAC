@@ -1,0 +1,123 @@
+#include <iostream.h>
+#include<conio.h>
+
+
+
+// Function to find the maximum timestamp between 2 events
+int max1(int a, int b)
+{
+	if (a > b)
+		return a;
+	else
+		return b;
+}
+
+// Function to display the logical timestamp
+void display(int e1, int e2,
+			int p1[100], int p2[100])
+{
+	int i;
+
+	cout << "\nThe time stamps of "
+		"events in P1:\n";
+
+	for (i = 0; i < e1; i++) {
+		cout << p1[i] << " ";
+	}
+
+	cout << "\nThe time stamps of "
+		"events in P2:\n";
+
+	// print the array
+	for (i = 0; i < e2; i++)
+		cout << p2[i] << " ";
+}
+
+// Function to find the timestamp of events
+void lamportLogicalClock(int e1, int e2, int m[100][100])
+{
+
+	int i, j, k, p1[100], p2[100];
+
+	// Initialize p1[] and p2[]
+	for (i = 0; i < e1; i++)
+		p1[i] = i + 1;
+
+	for (i = 0; i < e2; i++)
+		p2[i] = i + 1;
+
+	for (i = 0; i < e2; i++)
+		cout << "\te2" << i + 1;
+
+	for (i = 0; i < e1; i++)
+	{
+	    cout << "\n e1" << i + 1 << "\t";
+
+	    for (j = 0; j < e2; j++)
+	    {
+		cout << m[i][j] << "\t";
+	    }
+
+	}
+
+	for (i = 0; i < e1; i++) {
+		for (j = 0; j < e2; j++) {
+
+			// Change the timestamp if the message is sent
+			if (m[i][j] == 1) {
+				p2[j] = max1(p2[j], p1[i] + 1);
+				for (k = j + 1 ; k < e2; k++)
+					p2[k] = p2[k - 1] + 1;
+			}
+
+			// Change the timestamp if the message is received
+			if (m[i][j] == -1) {
+				p1[i] = max1(p1[i], p2[j] + 1);
+				for (k = i + 1 ; k < e1; k++)
+					p1[k] = p1[k - 1 ] + 1;
+			}
+		}
+	}
+
+
+	display(e1, e2, p1, p2);
+}
+
+
+int main()
+{
+	clrscr();
+
+	int p[2], n=2, i, j;
+
+	for(i=0;i<n;i++)
+	{
+	   cout<<"\nNo. of events in process " <<i+1<<": " ;
+	    cin>>p[i+1];
+
+	}
+
+	int e1=p[1], e2=p[2];
+	int m[100][100];
+
+
+
+	cout<<"\nENTER  1, if message is sent from process 1 to Process 2";
+	cout<<"\nENTER -1, if message is received by process 1 to Process 2";
+	cout<<"\nENTER  0, otherwise\n";
+
+	for(i=0;i<e1;i++)
+      {
+	for(j=0;j<e2;j++)
+	{
+	    cout<< "\nProcess 1 event " <<i+1 <<" and Process 2 event " <<j+1<<":\t";
+	    cin>>m[i][j];
+	}
+      }
+
+
+	// Function Call
+	lamportLogicalClock(e1, e2,m);
+	getch();
+	return 0;
+}
