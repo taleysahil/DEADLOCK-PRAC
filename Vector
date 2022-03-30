@@ -109,3 +109,8 @@ void main() {
 	getch ();
        //	return 0;
 }
+
+
+
+output  me 
+2  2 2 1 2 1 2 2 
