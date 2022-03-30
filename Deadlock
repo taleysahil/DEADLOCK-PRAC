@@ -121,3 +121,6 @@ void detectDeadlock(vector<std::vector<int>> &graph, int init, int dest)
 		}
 	}
 }
+
+//o/p   5 
+//wait  01001  00100  10000 00100  00010             1             deadlock detected
